@@ -18,6 +18,8 @@ namespace RestCustomerConsumer
                 string content = await client.GetStringAsync(CustomerUri);
                 IList<Customer> cList = JsonConvert.DeserializeObject<IList<Customer>>(content);
                 return cList;
+            
+
             }
         }
 
