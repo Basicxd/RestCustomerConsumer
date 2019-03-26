@@ -11,18 +11,14 @@ namespace RestCustomerConsumer
 {
     public class Program
     {
-      
         public static async Task<IList<Customer>> GetCustomersAsync()
         {
             string CustomerUri = "https://localhost:44336/api/customer";
             using (HttpClient client = new HttpClient())
-            {
-                
+            { 
                 string content = await client.GetStringAsync(CustomerUri);
                 IList<Customer> cList = JsonConvert.DeserializeObject<IList<Customer>>(content);
                 return cList;
-            
-
             }
         }
 
@@ -31,13 +27,10 @@ namespace RestCustomerConsumer
             string CustomerUri = "https://localhost:44336/api/customer/" + id;
             using (HttpClient client = new HttpClient())
             {
-
                 string content = await client.GetStringAsync(CustomerUri);
                 Customer oneID = JsonConvert.DeserializeObject<Customer>(content);
-                
+               
                 return oneID;
-
-
             }
         }
 
@@ -60,19 +53,12 @@ namespace RestCustomerConsumer
 
                 var jsonString = JsonConvert.SerializeObject(new Customer(firstName, lastName, year, lastId+1));
 
-
                 StringContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
                 var response = await client.PostAsync(CustomerUri, content);
                 return response;
-
-
-
             }
         }
-
-
-
 
         static void Main(string[] args)
         {
