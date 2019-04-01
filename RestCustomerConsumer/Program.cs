@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace RestCustomerConsumer
     {
         public static async Task<IList<Customer>> GetCustomersAsync()
         {
-            string CustomerUri = "https://localhost:44336/api/customer";
+            string CustomerUri = "https://restcustomerservicemikail.azurewebsites.net/api/customer";
             using (HttpClient client = new HttpClient())
             { 
                 string content = await client.GetStringAsync(CustomerUri);
@@ -60,35 +61,70 @@ namespace RestCustomerConsumer
             }
         }
 
+        public static async Task<string> UpdateCustomerAsync(Customer newCustomer, int id)
+        {
+
+            string CustomerUri = "https://localhost:44336/api/customer/";
+
+            using (HttpClient client = new HttpClient())
+            {
+                var jsonString = JsonConvert.SerializeObject(newCustomer);
+                StringContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PutAsync(CustomerUri + id, content);
+                string str = await response.Content.ReadAsStringAsync();
+                return str;
+            }
+        }
+
+        //public static async Task<Customer> UpdateCustomerAsync(Customer newCustomer, int id)
+        //{
+
+        //    string CustomerUri = "https://localhost:44336/api/customer/";
+
+        //    using (HttpClient client = new HttpClient())
+        //    {
+
+        //        var jsonString = JsonConvert.SerializeObject(newCustomer);
+        //        Console.WriteLine("JSON: " + jsonString);
+        //        StringContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+        //        HttpResponseMessage response = await client.PutAsync(CustomerUri, content);
+        //        if (response.StatusCode == HttpStatusCode.NotFound)
+        //        {
+        //            throw new Exception("Customer not found. Try another id");
+        //        }
+        //        //response.EnsureSuccessStatusCode();
+        //        string str = await response.Content.ReadAsStringAsync();
+        //        Customer updCustomer = JsonConvert.DeserializeObject<Customer>(str);
+        //        return updCustomer;
+        //    }
+        //}
+
+
+
         static void Main(string[] args)
         {
             
 
-            HttpResponseMessage adding = GetCustomersAsyncAdd("Mikol", "F", 1997).Result;
+            //HttpResponseMessage adding = GetCustomersAsyncAdd("Mikol", "F", 1997).Result;
 
-            Console.WriteLine("Hello World!");
             IList<Customer> result = GetCustomersAsync().Result;
             Console.WriteLine(result.Count);
             foreach (Customer C in result)
             {
-                int ID = C.ID;
-                string firstName = C.FirstName;
-                string lastName = C.LastName;
-                int year = C.Year;
-                Console.WriteLine($"Id: {ID} First Name: {firstName} Last Name: {lastName} Year: {year}");
-
-
+                Console.WriteLine(C.ToString());
+                //int ID = C.ID;
+                //string firstName = C.FirstName;
+                //string lastName = C.LastName;
+                //int year = C.Year;
+                //Console.WriteLine($"Id: {ID} First Name: {firstName} Last Name: {lastName} Year: {year}");
             }
 
-            //HttpResponseMessage adding = GetCustomersAsyncAdd("Mikol", "F", 1997).Result;
-       
+
 
             //Customer result2 = GetCustomersAsyncid(0).Result;
             //Console.WriteLine(result2.ToString());
-
-            //HttpResponseMessage delete = GetCustomersAsyncDelete(0).Result;
-
-            //Console.WriteLine(result);
+            
 
 
 
