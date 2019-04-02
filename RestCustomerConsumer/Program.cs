@@ -63,14 +63,16 @@ namespace RestCustomerConsumer
 
         public static async Task<string> UpdateCustomerAsync(Customer newCustomer, int id)
         {
-
             string CustomerUri = "https://localhost:44336/api/customer/";
-
             using (HttpClient client = new HttpClient())
             {
+                // Laver object om til en JSON string
                 var jsonString = JsonConvert.SerializeObject(newCustomer);
+                // ?
                 StringContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                // await gøre at den async skal være færdig før den gå videre
                 HttpResponseMessage response = await client.PutAsync(CustomerUri + id, content);
+                // 
                 string str = await response.Content.ReadAsStringAsync();
                 return str;
             }
@@ -78,12 +80,9 @@ namespace RestCustomerConsumer
 
         //public static async Task<Customer> UpdateCustomerAsync(Customer newCustomer, int id)
         //{
-
         //    string CustomerUri = "https://localhost:44336/api/customer/";
-
         //    using (HttpClient client = new HttpClient())
         //    {
-
         //        var jsonString = JsonConvert.SerializeObject(newCustomer);
         //        Console.WriteLine("JSON: " + jsonString);
         //        StringContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -95,13 +94,12 @@ namespace RestCustomerConsumer
         //        }
         //        //response.EnsureSuccessStatusCode();
         //        string str = await response.Content.ReadAsStringAsync();
+        //        //den laver object om til en customer object
         //        Customer updCustomer = JsonConvert.DeserializeObject<Customer>(str);
         //        return updCustomer;
         //    }
         //}
-
-
-
+        
         static void Main(string[] args)
         {
             
